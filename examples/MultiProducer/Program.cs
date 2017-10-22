@@ -53,11 +53,11 @@ namespace Confluent.Kafka.Examples.MultiProducer
 
                 // write (null, int) data to topic "second-data". statically type checked, using
                 // the same underlying producer as the producer1.
-                sProducer2.ProduceAsync("second-topic", null, 42);
+                sProducer2.ProduceAsync(new ProducerRecord<Null, int>("second-topic", null, 42));
 
                 // producers are NOT tied to topics. Although it's unusual that you might want to
                 // do so, you can use different serializing producers to write to the same topic.
-                sProducer2.ProduceAsync("first-topic", null, 107);
+                sProducer2.ProduceAsync(new ProducerRecord<Null, int>("first-topic", null, 107));
 
                 // ProducerAsync tasks are not waited on - there is a good chance they are still
                 // in flight.

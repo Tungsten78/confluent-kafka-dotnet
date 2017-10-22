@@ -221,7 +221,7 @@ namespace Confluent.Kafka.VerifiableClient
         {
             try
             {
-                Handle.ProduceAsync(topic, null, value, deliveryHandler);
+                Handle.ProduceAsync(new ProducerRecord<Null, string>(topic, null, value), deliveryHandler);
             }
             catch (KafkaException e)
             {

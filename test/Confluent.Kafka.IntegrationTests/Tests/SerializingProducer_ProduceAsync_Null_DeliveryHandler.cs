@@ -68,10 +68,10 @@ namespace Confluent.Kafka.IntegrationTests
 
             using (var producer = new Producer<Null, Null>(producerConfig, null, null))
             {
-                producer.ProduceAsync(topic, null, null, 0, true, dh);
-                producer.ProduceAsync(topic, null, null, 0, dh);
-                producer.ProduceAsync(topic, null, null, true, dh);
-                producer.ProduceAsync(topic, null, null, dh);
+                producer.ProduceAsync(new ProducerRecord<Null, Null>(topic, null, null, 0), true, dh);
+                producer.ProduceAsync(new ProducerRecord<Null, Null>(topic, null, null, 0), dh);
+                producer.ProduceAsync(new ProducerRecord<Null, Null>(topic, null, null), true, dh);
+                producer.ProduceAsync(new ProducerRecord<Null, Null>(topic, null, null), dh);
                 producer.Flush(TimeSpan.FromSeconds(10));
             }
 

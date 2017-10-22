@@ -819,7 +819,6 @@ namespace Confluent.Kafka
             => kafkaHandle.AddBrokers(brokers);
     }
 
-
     internal class SerializingProducer<TKey, TValue> : ISerializingProducer<TKey, TValue>
     {
         protected readonly Producer producer;
@@ -903,19 +902,15 @@ namespace Confluent.Kafka
         public Task<Message<TKey, TValue>> ProduceAsync(ProducerRecord<TKey, TValue> record, bool blockIfQueueFull) 
             => Produce(record.Topic, record.Key, record.Value, record.Timestamp, record.Partition, blockIfQueueFull);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val)
             => Produce(topic, key, val, null, Producer.RD_KAFKA_PARTITION_UA, true);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool) instead", true)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, int partition, bool blockIfQueueFull)
             => Produce(topic, key, val, null, partition, blockIfQueueFull);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, int partition)
             => Produce(topic, key, val, null, partition, true);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool) instead", true)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull)
             => Produce(topic, key, val, null, Producer.RD_KAFKA_PARTITION_UA, blockIfQueueFull);
 
@@ -964,19 +959,15 @@ namespace Confluent.Kafka
         public void ProduceAsync(ProducerRecord<TKey, TValue> record, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => Produce(record.Topic, record.Key, record.Value, record.Timestamp, record.Partition, blockIfQueueFull, deliveryHandler);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord, IDeliveryHandler) instead", true)]
         public void ProduceAsync(string topic, TKey key, TValue val, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => Produce(topic, key, val, null, Producer.RD_KAFKA_PARTITION_UA, true, deliveryHandler);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool, IDeliveryHandler) instead", true)]
         public void ProduceAsync(string topic, TKey key, TValue val, int partition, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => Produce(topic, key, val, null, partition, blockIfQueueFull, deliveryHandler);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord, IDeliveryHandler) instead", true)]
         public void ProduceAsync(string topic, TKey key, TValue val, int partition, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => Produce(topic, key, val, null, partition, true, deliveryHandler);
 
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool, IDeliveryHandler) instead", true)]
         public void ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => Produce(topic, key, val, null, Producer.RD_KAFKA_PARTITION_UA, blockIfQueueFull, deliveryHandler);
 
@@ -1098,7 +1089,6 @@ namespace Confluent.Kafka
         ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
         ///     not being called in another thread, this will block indefinitely.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val)
             => serializingProducer.ProduceAsync(topic, key, val);
 
@@ -1139,7 +1129,7 @@ namespace Confluent.Kafka
         ///     Tasks are completed on arbitrary thread pool threads and can 
         ///     be executed out of order.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord, bool) instead", false)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, int partition, bool blockIfQueueFull)
             => serializingProducer.ProduceAsync(topic, key, val, partition, blockIfQueueFull);
 
@@ -1151,7 +1141,7 @@ namespace Confluent.Kafka
         ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
         ///     not being called in another thread, this will block indefinitely.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, int partition)
             => serializingProducer.ProduceAsync(topic, key, val, partition);
 
@@ -1162,7 +1152,7 @@ namespace Confluent.Kafka
         /// <remarks>
         ///     The partition the message is produced to is determined using the configured partitioner.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord, bool) instead", false)]
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull)
             => serializingProducer.ProduceAsync(topic, key, val, blockIfQueueFull);
 
@@ -1182,7 +1172,7 @@ namespace Confluent.Kafka
         ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
         ///     not being called in another thread, this will block indefinitely.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord, IDeliveryHandler) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord, IDeliveryHandler) instead", false)]
         public void ProduceAsync(string topic, TKey key, TValue val, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => serializingProducer.ProduceAsync(topic, key, val, deliveryHandler);
 
@@ -1198,7 +1188,7 @@ namespace Confluent.Kafka
         ///     Refer to <see cref="ProduceAsync(string, TKey, TValue, int, bool)" />
         ///     for more information.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool, IDeliveryHandler) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord, bool, IDeliveryHandler) instead", false)]
         public void ProduceAsync(string topic, TKey key, TValue val, int partition, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => serializingProducer.ProduceAsync(topic, key, val, partition, blockIfQueueFull, deliveryHandler);
 
@@ -1210,7 +1200,7 @@ namespace Confluent.Kafka
         ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
         ///     not being called in another thread, this will block indefinitely.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord, IDeliveryHandler) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord, IDeliveryHandler) instead", false)]
         public void ProduceAsync(string topic, TKey key, TValue val, int partition, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => serializingProducer.ProduceAsync(topic, key, val, partition, deliveryHandler);
 
@@ -1221,7 +1211,7 @@ namespace Confluent.Kafka
         /// <remarks>
         ///     The partition the message is produced to is determined using the configured partitioner.
         /// </remarks>
-        [Obsolete("Use ProduceAsync(ProduceRecord, bool, IDeliveryHandler) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord, bool, IDeliveryHandler) instead", false)]
         public void ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => serializingProducer.ProduceAsync(topic, key, val, blockIfQueueFull, deliveryHandler);
 

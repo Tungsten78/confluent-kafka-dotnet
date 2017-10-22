@@ -5,21 +5,21 @@ namespace Confluent.Kafka
     public struct ProducerRecord<TKey, TValue>
     {
         public ProducerRecord(string topic, TValue value)
-            : this(topic, Producer.RD_KAFKA_PARTITION_UA, null, default(TKey), value)
+            : this(topic, default(TKey), value, Producer.RD_KAFKA_PARTITION_UA, null)
         {
         }
 
         public ProducerRecord(string topic, TKey key, TValue value)
-            : this(topic, Producer.RD_KAFKA_PARTITION_UA, null, key, value)
+            : this(topic, key, value, Producer.RD_KAFKA_PARTITION_UA, null)
         {
         }
 
-        public ProducerRecord(string topic, int partition, TKey key, TValue value) 
-            : this(topic, partition, null, key, value)
+        public ProducerRecord(string topic, TKey key, TValue value, int partition) 
+            : this(topic, key, value, partition, null)
         {
         }
 
-        public ProducerRecord(string topic, int partition, DateTime? timestamp, TKey key, TValue value)
+        public ProducerRecord(string topic, TKey key, TValue value, int partition, DateTime? timestamp)
         {
             Topic = topic;
             Partition = partition;

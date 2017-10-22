@@ -109,7 +109,7 @@ namespace Confluent.Kafka.IntegrationTests
             {
                 for (var index = 0; index < count; index++)
                 {
-                    var message = await producer.ProduceAsync(topic, $"test key {index}", $"test val {index}", partition);
+                    var message = await producer.ProduceAsync(new ProducerRecord<string, string>(topic, $"test key {index}", $"test val {index}", partition));
                     messages[index] = message;
                 }
             }

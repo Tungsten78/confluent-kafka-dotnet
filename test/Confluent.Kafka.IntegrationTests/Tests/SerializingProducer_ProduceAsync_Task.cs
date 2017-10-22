@@ -42,10 +42,10 @@ namespace Confluent.Kafka.IntegrationTests
             var drs = new List<Task<Message<string, string>>>();
             using (var producer = new Producer<string, string>(producerConfig, new StringSerializer(Encoding.UTF8), new StringSerializer(Encoding.UTF8)))
             {
-                drs.Add(producer.ProduceAsync(partitionedTopic, "test key 0", "test val 0", 1, true));
-                drs.Add(producer.ProduceAsync(partitionedTopic, "test key 1", "test val 1", 1));
-                drs.Add(producer.ProduceAsync(partitionedTopic, "test key 2", "test val 2", true));
-                drs.Add(producer.ProduceAsync(partitionedTopic, "test key 3", "test val 3"));
+                drs.Add(producer.ProduceAsync(new ProducerRecord<string, string>(partitionedTopic, "test key 0", "test val 0", 1), true));
+                drs.Add(producer.ProduceAsync(new ProducerRecord<string, string>(partitionedTopic, "test key 1", "test val 1", 1)));
+                drs.Add(producer.ProduceAsync(new ProducerRecord<string, string>(partitionedTopic, "test key 2", "test val 2"), true));
+                drs.Add(producer.ProduceAsync(new ProducerRecord<string, string>(partitionedTopic, "test key 3", "test val 3")));
                 producer.Flush(TimeSpan.FromSeconds(10));
             }
 

@@ -50,25 +50,24 @@ namespace Confluent.Kafka
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue)"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
         Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val);
 
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, int, bool)"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, int partition, bool blockIfQueueFull);
 
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, int)"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, int partition);
 
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, bool)"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull);
 
         void ProduceAsync(ProducerRecord<TKey, TValue> record, IDeliveryHandler<TKey, TValue> deliveryHandler);
@@ -78,25 +77,25 @@ namespace Confluent.Kafka
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, IDeliveryHandler{TKey, TValue})"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         void ProduceAsync(string topic, TKey key, TValue val, IDeliveryHandler<TKey, TValue> deliveryHandler);
 
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, int, bool, IDeliveryHandler{TKey, TValue})"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         void ProduceAsync(string topic, TKey key, TValue val, int partition, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler);
 
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, int, IDeliveryHandler{TKey, TValue})"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         void ProduceAsync(string topic, TKey key, TValue val, int partition, IDeliveryHandler<TKey, TValue> deliveryHandler);
 
         /// <summary>
         ///     Refer to <see cref="Producer{TKey, TValue}.ProduceAsync(string, TKey, TValue, bool, IDeliveryHandler{TKey, TValue})"/>.
         /// </summary>
-        [Obsolete("Use ProduceAsync(ProduceRecord) instead", true)]
+        [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         void ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler);
     }
 }
