@@ -1073,9 +1073,63 @@ namespace Confluent.Kafka
         public string Name
             => serializingProducer.Name;
 
+        /// <summary>
+        ///     Asynchronously send a single message to the broker.
+        /// </summary>
+        /// <param name="record">
+        ///     The record informations.
+        /// </param>
+        /// <returns>
+        ///     A Task which will complete with the corresponding delivery report
+        ///     for this request.
+        /// </returns>
+        /// <remarks>
+        ///     The partition the message is produced to is determined using the configured partitioner.
+        ///     
+        ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
+        ///     not being called in another thread, this will block indefinitely.
+        ///     
+        ///     If you require strict ordering of delivery reports to be maintained, 
+        ///     you should use a variant of ProduceAsync that takes an IDeliveryHandler
+        ///     parameter, not a variant that returns a Task&lt;Message&gt; because 
+        ///     Tasks are completed on arbitrary thread pool threads and can 
+        ///     be executed out of order.
+        /// </remarks>
         public Task<Message<TKey, TValue>> ProduceAsync(ProducerRecord<TKey, TValue> record) 
             => serializingProducer.ProduceAsync(record);
 
+        /// <summary>
+        ///     Asynchronously send a single message to the broker.
+        /// </summary>
+        /// <param name="record">
+        ///     The record informations.
+        /// </param>
+        /// <param name="blockIfQueueFull">
+        ///     Whether or not to block if the send queue is full.
+        ///     If false, a KafkaExcepion (with Error.Code == ErrorCode.Local_QueueFull) 
+        ///     will be thrown if an attempt is made to produce a message
+        ///     and the send queue is full.
+        ///      
+        ///     Warning: blockIfQueueFull is set to true, background polling is 
+        ///     disabled and Poll is not being called in another thread, 
+        ///     this will block indefinitely.
+        /// </param>
+        /// <returns>
+        ///     A Task which will complete with the corresponding delivery report
+        ///     for this request.
+        /// </returns>
+        /// <remarks>
+        ///     The partition the message is produced to is determined using the configured partitioner.
+        ///     
+        ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
+        ///     not being called in another thread, this will block indefinitely.
+        ///     
+        ///     If you require strict ordering of delivery reports to be maintained, 
+        ///     you should use a variant of ProduceAsync that takes an IDeliveryHandler
+        ///     parameter, not a variant that returns a Task&lt;Message&gt; because 
+        ///     Tasks are completed on arbitrary thread pool threads and can 
+        ///     be executed out of order.
+        /// </remarks>
         public Task<Message<TKey, TValue>> ProduceAsync(ProducerRecord<TKey, TValue> record, bool blockIfQueueFull)
             => serializingProducer.ProduceAsync(record, blockIfQueueFull);
 
@@ -1156,9 +1210,55 @@ namespace Confluent.Kafka
         public Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull)
             => serializingProducer.ProduceAsync(topic, key, val, blockIfQueueFull);
 
+        /// <summary>
+        ///     Asynchronously send a single message to the broker (order of delivery reports strictly guarenteed).
+        /// </summary>
+        /// <param name="record">
+        ///     The record informations.
+        /// </param>
+        /// <param name="deliveryHandler">
+        ///     The handler where notification of deliverys is reported.
+        ///     The order in which messages were acknowledged by the broker / failed is striclty guaranteed 
+        ///     (failure may be via broker or local). 
+        ///     IDeliveryHandler.HandleDeliveryReport callbacks are executed on the Poll thread.
+        /// </param>
+        /// <remarks>
+        ///     The partition the message is produced to is determined using the configured partitioner.
+        ///     
+        ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
+        ///     not being called in another thread, this will block indefinitely.
+        /// </remarks>
         public void ProduceAsync(ProducerRecord<TKey, TValue> record, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => serializingProducer.ProduceAsync(record, deliveryHandler);
 
+        /// <summary>
+        ///     Asynchronously send a single message to the broker (order of delivery reports strictly guarenteed).
+        /// </summary>
+        /// <param name="record">
+        ///     The record informations.
+        /// </param>
+        /// <param name="blockIfQueueFull">
+        ///     Whether or not to block if the send queue is full.
+        ///     If false, a KafkaExcepion (with Error.Code == ErrorCode.Local_QueueFull) 
+        ///     will be thrown if an attempt is made to produce a message
+        ///     and the send queue is full.
+        ///      
+        ///     Warning: blockIfQueueFull is set to true, background polling is 
+        ///     disabled and Poll is not being called in another thread, 
+        ///     this will block indefinitely.
+        /// </param>
+        /// <param name="deliveryHandler">
+        ///     The handler where notification of deliverys is reported.
+        ///     The order in which messages were acknowledged by the broker / failed is striclty guaranteed 
+        ///     (failure may be via broker or local). 
+        ///     IDeliveryHandler.HandleDeliveryReport callbacks are executed on the Poll thread.
+        /// </param>
+        /// <remarks>
+        ///     The partition the message is produced to is determined using the configured partitioner.
+        ///     
+        ///     Blocks if the send queue is full. Warning: if background polling is disabled and Poll is
+        ///     not being called in another thread, this will block indefinitely.
+        /// </remarks>
         public void ProduceAsync(ProducerRecord<TKey, TValue> record, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler)
             => serializingProducer.ProduceAsync(record, blockIfQueueFull, deliveryHandler);
 

@@ -43,8 +43,14 @@ namespace Confluent.Kafka
         /// </summary>
         ISerializer<TValue> ValueSerializer { get; }
 
+        /// <summary>
+        ///     Refer to <see cref="Producer{TKey,TValue}.ProduceAsync(ProducerRecord{TKey,TValue})"/>.
+        /// </summary>
         Task<Message<TKey, TValue>> ProduceAsync(ProducerRecord<TKey, TValue> record);
 
+        /// <summary>
+        ///     Refer to <see cref="Producer{TKey,TValue}.ProduceAsync(ProducerRecord{TKey,TValue}, bool)"/>.
+        /// </summary>
         Task<Message<TKey, TValue>> ProduceAsync(ProducerRecord<TKey, TValue> record, bool blockIfQueueFull);
 
         /// <summary>
@@ -70,8 +76,14 @@ namespace Confluent.Kafka
         [Obsolete("Use ProduceAsync(ProduceRecord) instead", false)]
         Task<Message<TKey, TValue>> ProduceAsync(string topic, TKey key, TValue val, bool blockIfQueueFull);
 
+        /// <summary>
+        ///     Refer to <see cref="Producer{TKey,TValue}.ProduceAsync(ProducerRecord{TKey,TValue}, IDeliveryHandler{TKey, TValue})"/>.
+        /// </summary>
         void ProduceAsync(ProducerRecord<TKey, TValue> record, IDeliveryHandler<TKey, TValue> deliveryHandler);
 
+        /// <summary>
+        ///     Refer to <see cref="Producer{TKey,TValue}.ProduceAsync(ProducerRecord{TKey,TValue}, bool, IDeliveryHandler{TKey, TValue})"/>.
+        /// </summary>
         void ProduceAsync(ProducerRecord<TKey, TValue> record, bool blockIfQueueFull, IDeliveryHandler<TKey, TValue> deliveryHandler);
 
         /// <summary>
