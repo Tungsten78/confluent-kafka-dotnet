@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Confluent.Kafka
 {
@@ -7,7 +8,7 @@ namespace Confluent.Kafka
     ///     If a valid partition number is specified that partition will be used when sending the record. If no partition is specified but a key is present a partition will be chosen using a hash of the key. If neither key nor partition is present a partition will be assigned in a round-robin fashion.
     ///     The record also has an associated timestamp. If the user did not provide a timestamp, the producer will stamp the record with its current time. The timestamp eventually used by Kafka depends on the timestamp type configured for the topic.
     /// </summary>
-    public struct ProducerRecord<TKey, TValue>
+    public class ProducerRecord<TKey, TValue>
     {
         /// <summary>
         ///     Creates a record with a specified timestamp to be sent to a specified topic and partition.
@@ -80,6 +81,13 @@ namespace Confluent.Kafka
         /// </param>
         public ProducerRecord(string topic, TKey key, TValue value, int partition, DateTime? timestamp)
         {
+            if (string.IsNullOrEmpty(topic))
+                throw new ArgumentNullException(nameof(topic), "Topic cannot be null.");
+            if (timestamp != null && timestamp.Value != DateTime.MinValue)
+                throw new ArgumentException($"Invalid timestamp: {timestamp}. Timestamp should always be non-negative or null.");
+            if (partition < 0)
+                throw new ArgumentException($"Invalid partition: {partition}. Partition number should always be non-negative or null.");
+
             Topic = topic;
             Partition = partition;
             Timestamp = timestamp;
@@ -111,5 +119,52 @@ namespace Confluent.Kafka
         /// The timestamp of the record.
         /// </summary>
         public DateTime? Timestamp { get; }
+
+        /// <summary>
+        ///     Tests whether this <see cref="ProducerRecord{TKey, TValue}"/> instance is equal to the specified object.
+        /// </summary>
+        /// <param name="other">
+        ///     The object to test.
+        /// </param>
+        protected bool Equals(ProducerRecord<TKey, TValue> other)
+        {
+            return string.Equals(Topic, other.Topic) && EqualityComparer<TKey>.Default.Equals(Key, other.Key) && EqualityComparer<TValue>.Default.Equals(Value, other.Value) && Partition == other.Partition && Timestamp.Equals(other.Timestamp);
+        }
+
+        /// <summary>
+        ///     Tests whether this <see cref="ProducerRecord{TKey, TValue}"/> instance is equal to the specified object.
+        /// </summary>
+        /// <param name="obj">
+        ///     The object to test.
+        /// </param>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ProducerRecord<TKey, TValue>)obj);
+        }
+
+        /// <summary>
+        ///     Returns a hash code for this <see cref="ProducerRecord{TKey, TValue}"/> value.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = Topic != null ? Topic.GetHashCode() : 0;
+                hashCode = (hashCode * 397) ^ EqualityComparer<TKey>.Default.GetHashCode(Key);
+                hashCode = (hashCode * 397) ^ EqualityComparer<TValue>.Default.GetHashCode(Value);
+                hashCode = (hashCode * 397) ^ Partition;
+                hashCode = (hashCode * 397) ^ Timestamp.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        /// <summary>
+        ///     Returns the string representation of the ProducerRecord.
+        /// </summary>
+        public override string ToString() 
+            => $"ProducerRecord({nameof(Topic)}: {Topic}, {nameof(Key)}: {Key}, {nameof(Value)}: {Value}, {nameof(Partition)}: {Partition}, {nameof(Timestamp)}: {Timestamp})";
     }
 }
